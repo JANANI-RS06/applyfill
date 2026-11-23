@@ -13,9 +13,8 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["chrome", "vitest/globals"],
-    "paths": { "@/*": ["./src/*"] },
-    "baseUrl": "."
+    "types": ["chrome", "node", "vitest/globals"],
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["src", "tests", "scripts", "*.ts"]
 }
