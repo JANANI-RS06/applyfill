@@ -33,4 +33,4 @@ Each milestone ships as a set of small commits with tests.
 - Documentation, packaging, privacy policy, store listing, v0.1.0 tag.
 
 ## After 0.1
-- Per-site fixes contributed as fixtures, import and export of profiles, more locales for dates and phone formats.
+- Model-assisted resume parsing, per-site fixes contributed as fixtures, more locales for dates and phone formats, Firefox build.

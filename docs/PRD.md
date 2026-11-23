@@ -43,7 +43,7 @@ ApplyFill is a Chrome extension that fills job application forms from a structur
 
 - Parse PDF and DOCX locally into a draft profile.
 - The user reviews and edits the draft before it is saved.
-- A local model improves extraction when available; a deterministic parser works without it.
+- Parsing is deterministic and works without the model.
 
 ### Autofill
 
