@@ -22,6 +22,12 @@ describe("grounding", () => {
     expect(isGrounded("I worked at Initech for 12 years.", profile())).toBe(false);
     expect(isGrounded("I led a team of 40 at Acme.", profile())).toBe(false);
   });
+  it("ignores record ids when checking numbers", () => {
+    const p = profile();
+    p.employment[0]!.id = "9f12-4046-77c0";
+    expect(isGrounded("I worked there for 12 years.", p)).toBe(false);
+    expect(isGrounded("I led 4046 people.", p)).toBe(false);
+  });
   it("flags sensitive questions", () => {
     expect(isSensitiveQuestion("Have you ever been convicted of a felony?")).toBe(true);
     expect(isSensitiveQuestion("Describe your background")).toBe(false);
