@@ -1,4 +1,4 @@
-import { byIdIn, clean, isVisible, queryAllDeep, type Root } from "./dom";
+import { byIdIn, clean, cssEscape, isVisible, queryAllDeep, type Root } from "./dom";
 
 export type FieldKind =
   | "text"
@@ -88,7 +88,7 @@ function labelFor(el: HTMLElement): string {
   const id = el.getAttribute("id");
   if (id) {
     const root = el.getRootNode() as Document | ShadowRoot;
-    const l = root.querySelector?.(`label[for="${CSS.escape(id)}"]`);
+    const l = root.querySelector?.(`label[for="${cssEscape(id)}"]`);
     if (l) {
       const t = clean(l.textContent);
       if (t) return t;
