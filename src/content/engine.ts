@@ -28,12 +28,6 @@ export interface RunOptions {
   touched?: WeakSet<Element>;
 }
 
-const filledIds = new WeakSet<Element>();
-
-export function wasFilled(el: Element): boolean {
-  return filledIds.has(el);
-}
-
 function optionLabels(f: Field): string[] {
   return f.options.map((o) => o.label).filter(Boolean);
 }
@@ -147,14 +141,13 @@ export async function fillPage(
   for (const { f, c } of items) {
     const label = f.label || f.name || f.placeholder || f.kind;
     const userTouched = opts.touched?.has(f.el) ?? false;
-    if ((f.filled && !overwrite && f.kind !== "file") || userTouched) {
+    if ((f.filled && !overwrite && f.kind !== "file") || (userTouched && !overwrite)) {
       reports.push({ label, key: c?.key ?? null, status: "skipped", source: "none" });
       continue;
     }
     const idx = sections.get(f.id) ?? { employment: 0, education: 0 };
     try {
       const r = await fillOne(f, c, idx, deps, memory, resume);
-      if (r.status === "verified") for (const el of f.group) filledIds.add(el);
       reports.push(r);
     } catch {
       reports.push({ label, key: c?.key ?? null, status: "unverified", source: "none" });
