@@ -54,7 +54,7 @@ await build({
       formats: ["es"],
       fileName: () => "background.js",
     },
-    rollupOptions: { output: { inlineDynamicImports: true } },
+    rollupOptions: { output: { codeSplitting: false } },
   },
 });
 

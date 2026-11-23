@@ -1,6 +1,6 @@
 import type { Profile } from "@/shared/schema";
 import type { Settings, StoredAnswer } from "@/shared/db";
-import { questionKey } from "@/shared/db";
+import { questionKey } from "@/shared/text";
 import { isSensitiveQuestion } from "@/shared/grounding";
 import type { AskRequest, FieldReport, FillReport } from "@/shared/messages";
 import { classify, type Classification } from "./classify";

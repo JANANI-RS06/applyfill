@@ -1,5 +1,8 @@
 import Dexie, { type Table } from "dexie";
 import { emptyProfile, profileSchema, type Profile } from "./schema";
+import { questionKey } from "./text";
+
+export { questionKey, normalizeText } from "./text";
 
 export interface StoredAnswer {
   key: string;
@@ -83,20 +86,6 @@ export async function saveSettings(patch: Partial<Settings>): Promise<Settings> 
   const next = { ...(await loadSettings()), ...patch, id: "settings" as const };
   await db.settings.put(next);
   return next;
-}
-
-export function questionKey(question: string, options: string[] = []): string {
-  const q = normalizeText(question);
-  const o = options.map(normalizeText).filter(Boolean).sort().join("|");
-  return o ? `${q}::${o}` : q;
-}
-
-export function normalizeText(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[*:()?•]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 export async function rememberAnswer(
