@@ -108,3 +108,30 @@ test("never submits the form", async () => {
   expect(submitted).toBe(false);
   await page.close();
 });
+
+test("fills the active tab when asked from the extension and reports the result", async () => {
+  await seeded();
+  const page = await context.newPage();
+  await page.goto("/basic.html");
+  await page.getByRole("button", { name: "Fill application" }).waitFor();
+  const ext = await context.newPage();
+  await ext.goto(`chrome-extension://${extensionId}/src/popup/index.html`);
+  const tabId = await ext.evaluate(async () => {
+    for (const t of await chrome.tabs.query({})) {
+      const alive = await chrome.tabs.sendMessage(t.id!, { type: "ping" }).catch(() => null);
+      if (!alive) continue;
+      await chrome.tabs.sendMessage(t.id!, { type: "fill" });
+      return t.id!;
+    }
+    throw new Error("no tab with the content script");
+  });
+  await expect(page.locator("#first_name")).toHaveValue("Ada");
+  const reports = await ext.evaluate(
+    (id) => new Promise<Record<string, { fields: { status: string }[] }>>((res) =>
+      chrome.runtime.sendMessage({ type: "report:get", tabId: id }, (r) => res(r.data))),
+    tabId,
+  );
+  const fields = Object.values(reports).flatMap((r) => r.fields);
+  expect(fields.filter((f) => f.status === "verified").length).toBeGreaterThan(8);
+  await page.close();
+});

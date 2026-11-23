@@ -75,3 +75,20 @@ test("model panel explains the fallback and never downloads without approval", a
   await expect(page.getByRole("heading", { name: "Local model" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Approve download" })).toBeVisible();
 });
+
+test("imports a DOCX resume", async () => {
+  const JSZip = (await import("jszip")).default;
+  const zip = new JSZip();
+  zip.file("[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`);
+  zip.file("_rels/.rels", `<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
+  const para = (t: string) => `<w:p><w:r><w:t>${t}</w:t></w:r></w:p>`;
+  const lines = ["Grace Hopper", "Arlington, VA 22201 | grace@example.com", "SKILLS", "COBOL, Compilers"];
+  zip.file("word/document.xml", `<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${lines.map(para).join("")}</w:body></w:document>`);
+  const buffer = await zip.generateAsync({ type: "nodebuffer" });
+
+  const page = await open();
+  await page.getByRole("tab", { name: "Resume" }).click();
+  await page.locator('input[type="file"]').setInputFiles({ name: "grace.docx", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", buffer });
+  await expect(page.getByLabel("First name")).toHaveValue("Grace", { timeout: 20_000 });
+  await expect(page.getByLabel("Email")).toHaveValue("grace@example.com");
+});

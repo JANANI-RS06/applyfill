@@ -80,11 +80,16 @@ function hasNewFillable(): boolean {
 }
 
 let timer: number | undefined;
+let lastProbe = 0;
 function onMutation() {
   window.clearTimeout(timer);
   timer = window.setTimeout(async () => {
     if (running) return;
-    if (!chip && !dismissed && looksLikeApplication()) await showChip();
+    const now = Date.now();
+    if (!chip && !dismissed && now - lastProbe > 2500) {
+      lastProbe = now;
+      if (looksLikeApplication()) await showChip();
+    }
     if (armed && hasNewFillable()) await run(false);
   }, 700);
 }
