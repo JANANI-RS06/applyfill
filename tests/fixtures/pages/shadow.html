@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Apply (shadow)</title></head>
+<body>
+<h1>Apply</h1>
+<div id="host"></div>
+<script>
+const root = document.getElementById("host").attachShadow({ mode: "open" });
+root.innerHTML = `
+  <form>
+    <label for="a">First name</label><input id="a">
+    <label for="b">Last name</label><input id="b">
+    <label for="c">Email address</label><input id="c" type="email">
+  </form>`;
+</script>
+</body>
+</html>

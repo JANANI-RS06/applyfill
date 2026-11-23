@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Apply (multi step)</title></head>
+<body>
+<h1>Application</h1>
+<div id="root"></div>
+<script>
+const state = { step: 1, values: {} };
+const root = document.getElementById("root");
+
+function controlled(id, label, opts = {}) {
+  const wrap = document.createElement("div");
+  const l = document.createElement("label");
+  l.htmlFor = id; l.textContent = label;
+  const i = document.createElement("input");
+  i.id = id; i.value = state.values[id] ?? "";
+  i.addEventListener("input", () => {
+    let v = i.value;
+    if (opts.digitsOnly) v = v.replace(/\D/g, "");
+    if (opts.reject) v = "";
+    state.values[id] = v;
+    i.value = v;
+  });
+  wrap.append(l, i);
+  return wrap;
+}
+
+function combobox() {
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `<label for="cb">Country</label>
+    <input id="cb" role="combobox" aria-expanded="false" aria-controls="cb-list" autocomplete="off">
+    <ul id="cb-list" role="listbox" hidden></ul>`;
+  const input = wrap.querySelector("#cb");
+  const list = wrap.querySelector("#cb-list");
+  const all = ["Canada", "Mexico", "United Kingdom", "United States of America"];
+  const render = () => {
+    const q = input.value.toLowerCase();
+    list.innerHTML = "";
+    all.filter((c) => c.toLowerCase().includes(q)).forEach((c) => {
+      const li = document.createElement("li");
+      li.setAttribute("role", "option");
+      li.textContent = c;
+      li.addEventListener("mousedown", (e) => e.preventDefault());
+      li.addEventListener("click", () => { input.value = c; state.values.country = c; list.hidden = true; });
+      list.append(li);
+    });
+    list.hidden = false;
+  };
+  input.addEventListener("click", render);
+  input.addEventListener("focus", render);
+  input.addEventListener("input", render);
+  return wrap;
+}
+
+function step1() {
+  root.innerHTML = "<h2>Contact</h2>";
+  root.append(controlled("fn", "First name"), controlled("ln", "Last name"), controlled("em", "Email"), controlled("ph", "Phone (digits only)", { digitsOnly: true }), combobox());
+  const next = document.createElement("button");
+  next.id = "next"; next.textContent = "Next";
+  next.addEventListener("click", () => { state.step = 2; step2(); });
+  root.append(next);
+}
+
+function job(n) {
+  const s = document.createElement("section");
+  s.innerHTML = `<h3>Work Experience ${n}</h3>`;
+  s.append(controlled(`co${n}`, "Company"), controlled(`ti${n}`, "Job title"), controlled(`sd${n}`, "Start date (MM/YYYY)"), controlled(`ed${n}`, "End date (MM/YYYY)"));
+  return s;
+}
+
+function step2() {
+  root.innerHTML = "<h2>Experience</h2>";
+  setTimeout(() => {
+    root.append(job(1), job(2));
+    root.append(controlled("locked", "Referral code", { reject: true }));
+  }, 250);
+}
+
+step1();
+</script>
+</body>
+</html>

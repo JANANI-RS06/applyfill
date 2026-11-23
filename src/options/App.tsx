@@ -17,6 +17,7 @@ export function App() {
   const [dirty, setDirty] = useState(false);
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
+  const [notice, setNotice] = useState("");
 
   useEffect(() => {
     loadProfile().then((p) => {
@@ -70,12 +71,16 @@ export function App() {
         ))}
       </nav>
 
+      {tab === "Profile" && notice && (
+        <p className="mb-4 rounded-md bg-brand-50 p-3 text-sm text-brand-700" role="status">{notice}</p>
+      )}
       {tab === "Profile" && <ProfileEditor profile={profile} onChange={setProfile} />}
       {tab === "Resume" && (
         <ResumePanel
           profile={profile}
-          onDraft={(p) => {
+          onDraft={(p, note) => {
             setProfile(p);
+            setNotice(note);
             setTab("Profile");
           }}
         />

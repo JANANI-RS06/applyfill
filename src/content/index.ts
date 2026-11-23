@@ -106,18 +106,22 @@ async function showChip() {
 function trackCorrections() {
   document.addEventListener(
     "change",
-    (e) => {
+    async (e) => {
       if (!e.isTrusted) return;
       const target = e.target as HTMLElement | null;
       if (!target) return;
       touched.add(target);
-      if (!cached) return;
       const field = scanFields(document).find((f) => f.group.includes(target));
       if (!field) return;
       const value = displayValue(field, target);
-      if (!shouldRemember(field, classify(field), value, cached.profile)) return;
-      const options = field.options.map((o) => o.label).filter(Boolean);
-      send({ type: "answer:remember", question: field.label, options, answer: value }).catch(() => undefined);
+      try {
+        const data = cached ?? (await loadData());
+        if (!shouldRemember(field, classify(field), value, data.profile)) return;
+        const options = field.options.map((o) => o.label).filter(Boolean);
+        await send({ type: "answer:remember", question: field.label, options, answer: value });
+      } catch {
+        return;
+      }
     },
     true,
   );

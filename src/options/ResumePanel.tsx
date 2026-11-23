@@ -5,7 +5,7 @@ import { mergeProfiles, parseResumeText } from "@/parsing/resume";
 import type { Profile } from "@/shared/schema";
 import { Section } from "@/ui/components";
 
-type Props = { profile: Profile; onDraft: (p: Profile) => void };
+type Props = { profile: Profile; onDraft: (p: Profile, note: string) => void };
 
 export function ResumePanel({ profile, onDraft }: Props) {
   const [stored, setStored] = useState<string>("");
@@ -33,9 +33,9 @@ export function ResumePanel({ profile, onDraft }: Props) {
       if (!found) {
         setNote("The file was saved for uploads, but no profile details could be read from it.");
       } else {
-        onDraft(mergeProfiles(profile, parsed, mode));
-        setNote(
-          `Read ${parsed.employment.length} jobs, ${parsed.education.length} schools, and ${parsed.skills.length} skills. Review them in the Profile tab, then save.`,
+        onDraft(
+          mergeProfiles(profile, parsed, mode),
+          `Read ${parsed.employment.length} jobs, ${parsed.education.length} schools, and ${parsed.skills.length} skills from your resume. Check everything below, then save.`,
         );
       }
     } catch (e) {
