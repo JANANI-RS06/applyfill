@@ -8,7 +8,7 @@ on:
       context:
         description: Area to generate issues for
         required: true
-        default: 'Chrome extension UX, autofill reliability, and contributor docs'
+        default: 'good first issues for new contributors: popup UX, docs, tests, and safe autofill edge cases'
       issue_count:
         description: Number of issues (1-5)
         required: true
@@ -22,7 +22,7 @@ jobs:
   generate:
     uses: aprameyak/issue-generator/.github/workflows/generate.yml@main
     with:
-      context: ${{ github.event.inputs.context || 'Chrome extension UX, autofill reliability, and contributor docs' }}
+      context: ${{ github.event.inputs.context || 'good first issues for new contributors: popup UX, docs, tests, and safe autofill edge cases' }}
       issue_count: ${{ github.event.inputs.issue_count || '3' }}
     secrets:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/aprameyak/applyfill/blob/main/SECURITY.md
+    about: Report a vulnerability privately using SECURITY.md
+  - name: Contributing guide
+    url: https://github.com/aprameyak/applyfill/blob/main/CONTRIBUTING.md
+    about: Setup, field patterns, and pull request expectations

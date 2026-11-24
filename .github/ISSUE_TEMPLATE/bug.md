@@ -1,6 +1,7 @@
 ---
 name: Bug
 about: Something else is broken
+labels: bug
 ---
 
 **What happened:**

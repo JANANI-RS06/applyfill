@@ -12,6 +12,13 @@ npm run test:e2e
 
 Node 22 or newer.
 
+## Finding work
+
+- Start with issues labeled [`good first issue`](https://github.com/aprameyak/applyfill/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
+- Broader help: [`help wanted`](https://github.com/aprameyak/applyfill/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
+- Prefer one open issue per pull request. Comment on the issue before starting if it is already assigned or has an open PR.
+- New field-pattern bugs: use the **Form not filling correctly** issue template.
+
 ## Reporting a form that does not fill
 
 Open an issue with:
@@ -42,6 +49,7 @@ Do not paste resumes or profile exports.
 - `npm run check` and `npm run test:e2e` must pass.
 - Keep commits small and messages in the imperative, for example "Match state abbreviations in selects".
 - Avoid code comments that restate the code.
+- Do not add `Co-authored-by` trailers.
 
 ## Releases
 

@@ -79,7 +79,11 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/PRD.md](docs/PRD.md), an
 
 ## Contributing
 
-Bug reports with a saved copy of the problem form are the most useful. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Bug reports with a minimal HTML snippet of the problem form are the most useful.
+
+- Guide: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Starter tasks: [good first issue](https://github.com/aprameyak/applyfill/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+- Field fill bugs: use the **Form not filling correctly** issue template
 
 ## License
 

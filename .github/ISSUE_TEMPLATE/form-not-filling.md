@@ -1,6 +1,7 @@
 ---
 name: Form not filling correctly
 about: A field was missed, filled wrongly, or not accepted
+labels: bug, help wanted
 ---
 
 **Site or ATS (optional):**
